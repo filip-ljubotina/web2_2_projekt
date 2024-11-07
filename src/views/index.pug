@@ -1,0 +1,82 @@
+doctype html
+html
+  head
+    title Security Testing
+  body
+    h1 SQL Injection 
+    | Ova login forma demonstrira jednostavan 
+    strong SQL injection 
+    | napad. Možete koristiti 
+    strong ' OR 1 = 1-- 
+    | kao lozinku prilikom prijave kako biste vidjeli učinke napada. Označavanjem checkbox-a, napad je 
+    strong omogućen.
+    br
+    br
+    form(action="/login-sql" method="post")
+      label(for="username") Username:
+      input(type="text" name="username" required)
+      br
+      label(for="password") Password:
+      input(type="password" name="password" required)
+      br
+      label(for="allowInjection") Enable SQL Injection:
+      input(type="checkbox" name="allowInjection")
+      br
+      button(type="submit") Login
+
+    if users && users.length > 0
+      table(border="1")
+        thead
+          tr
+            th ID
+            th Username
+            th Password
+        tbody
+          each user in users
+            tr
+              td= user.id
+              td= user.username
+              td= user.password
+    hr
+
+    h1 CSRF Attack
+    
+    | Ova login forma demonstrira jednostavan 
+    strong CSRF 
+    | napad. Možete koristiti 
+    strong userame: admin ; password: admin123 
+    | kao podatke za prijavu. Označavanjem checkbox-a i klikom na update napad je 
+    strong onemogućen.
+    | Kako bi se vidio učinak napada, potrebno je biti prijavljen, ostaviti checkbox praznim te kliknuti na sljedeći link. Klikom na link otvara se stranica koja u pozadini automatski vrši napad, odnosno odjavljuje korisnika s trenutne stranice: 
+    a(href="https://localhost:4042/") https://localhost:4042
+
+    if error
+      h2 Error
+      p= error
+
+    
+    if csrfDemoAuthenticated
+      p You are logged in for the CSRF demo as #{user.username}.
+      form(action='/logout', method='POST')
+        if csrfEnabled && csrfToken
+          input(type='hidden', name='_csrf', value=csrfToken)
+        button(type='submit') Logout from CSRF Demo
+    else
+      form(action="/login-csrf" method="post")
+        label(for="username") Username:
+        input(type="text" name="username" required)
+        br
+        label(for="password") Password:
+        input(type="password" name="password" required)
+        br
+        button(type="submit") Login for CSRF Demo
+
+    form(action='/toggle-csrf', method='POST')
+      if csrfToken
+        input(type='hidden', name='_csrf', value=csrfToken)
+      label
+        input(type='checkbox', name='csrfEnabled', checked=csrfEnabled)
+        | Enable CSRF Protection
+      button(type='submit') Update
+    p CSRF Protection is #{csrfEnabled ? 'Enabled' : 'Disabled'}.
+    hr

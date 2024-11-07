@@ -1,0 +1,33 @@
+{
+  "scripts": {
+    "build": "npm install && npm run clean && tsc && npm run copy-views && npm run copy-views",
+    "clean": "shx rm -rf dist",
+    "copy-views": "shx cp -r src/views/ dist",
+    "start": "concurrently --kill-others \"npm:webapp\" \"npm:attackapp\"",
+    "webapp": "node dist/webapp.js",
+    "attackapp": "node dist/attackapp.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "express": "^4.17.1",
+    "express-session": "^1.18.1",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.13.1",
+    "pug": "^3.0.2",
+    "qs": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/csurf": "^1.11.5",
+    "@types/express": "^4.17.14",
+    "@types/express-session": "^1.18.0",
+    "@types/node": "^20.8.6",
+    "concurrently": "^7.4.0",
+    "shx": "^0.3.4"
+  }
+}

